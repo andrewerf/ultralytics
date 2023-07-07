@@ -48,7 +48,9 @@ def on_fit_epoch_end(trainer):
     if mlflow:
         metrics_dict = {f"{re.sub('[()]', '', k)}": float(v) for k, v in trainer.metrics.items()}
         run.log_metrics(metrics=metrics_dict, step=trainer.epoch)
-
+        if (trainer.save_period > 0) and (trainer.epoch % trainer.save_period == 0):
+            run.log_artifact(trainer.last)
+            run.log_artifact(trainer.best)
 
 def on_train_end(trainer):
     """Called at end of train loop to log model artifact info."""
