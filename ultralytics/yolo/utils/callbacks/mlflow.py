@@ -28,10 +28,7 @@ def on_pretrain_routine_end(trainer):
 
         experiment_name = os.environ.get('MLFLOW_EXPERIMENT') or trainer.args.project or '/Shared/YOLOv8'
         run_name = os.environ.get('MLFLOW_RUN') or trainer.args.name
-        experiment = mlflow.get_experiment_by_name(experiment_name)
-        if experiment is None:
-            mlflow.create_experiment(experiment_name)
-        mlflow.set_experiment(experiment_name)
+        experiment = mlflow.set_experiment(experiment_name=experiment_name)
 
         prefix = colorstr('MLFlow: ')
         try:
